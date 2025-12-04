@@ -7,7 +7,7 @@ pipeline {
   }
 
   environment {
-    machine_dns = 'ams-sealights.sealights.co',
+    machine_dns = 'ams-sealights.sealights.co'
     LAB_ID = ''
   }
 
