@@ -92,7 +92,7 @@ pipeline {
             def IDENTIFIER= "${params.BRANCH}-${env.CURRENT_VERSION}"
             env.LAB_ID = create_lab_id(
             token: "${env.SL_TOKEN}",
-            machine: "https://ams-sealights",
+            machine: "https://ams-sealights.sealights.co",
             app: "${params.APP_NAME}",
             branch: "${params.BRANCH}",
             test_env: "${IDENTIFIER}",
