@@ -7,7 +7,8 @@ pipeline {
   }
 
   environment {
-    machine_dns = 'template.btq.sealights.co'
+    machine_dns = 'ams-sealights.sealights.co',
+    LAB_ID = ''
   }
 
   parameters {
