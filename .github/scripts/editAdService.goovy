@@ -1,0 +1,47 @@
+
+ pipeline {
+    agent any
+
+    environment {
+        GIT_REPO = 'https://github.com/Sealights-btq/ian-btq.git'
+        BRANCH = 'main'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Check out code
+                git branch: "${BRANCH}", url: "${GIT_REPO}"
+            }
+        }
+
+        stage('Run Node.js script') {
+            steps {
+                script {
+                    // Ensure Node.js is available (optional if already installed in agent)
+                    sh 'node -v'
+                    sh 'npm install' // install deps if needed
+                    sh 'node yourScript.js' // run the file modification script
+                }
+            }
+        }
+
+        stage('Commit and Push Changes') {
+            steps {
+                script {
+                    sh '''
+                        git config user.name "Jenkins"
+                        git config user.email "jenkins@example.com"
+                        git add .
+                        if ! git diff-index --quiet HEAD; then
+                            git commit -m "Automated changes from Jenkins"
+                            git push origin ${BRANCH}
+                        else
+                            echo "No changes to commit"
+                        fi
+                    '''
+                }
+            }
+        }
+    }
+}

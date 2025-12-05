@@ -1,0 +1,58 @@
+name: Edit Files and Commit
+
+on:
+  schedule:
+    - cron: "0 */4 * * *" # Every 2 hours UTC
+  workflow_dispatch:       # Optional: run manually
+
+jobs:
+  edit-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run scripts and commit changes
+        run: |
+          declare -A edits=(
+            ["editadService.js"]="src/adservice/src/main/java/hipstershop/AdServiceClient.java"
+            ["update-product-names.js"]="src/productcatalogservice/products.json"
+            ["editProductCalalogService.js"]="src/productcatalogservice/server.go src/productcatalogservice/product_catalog.go"
+            ["editPaymentService.js"]="src/paymentservice/charge.js src/paymentservice/index.js src/paymentservice/server.js" 
+            ["editRecommendationService.js"]="src/recommendationservice/client.py src/recommendationservice/logger.py src/recommendationservice/recommendation_server.py"
+            ["editShippingService.js"]="src/shippingservice/main.go src/shippingservice/quote.go src/shippingservice/tracker.go"
+            ["modifyFrontEndService.js"]="src/frontend/main.go src/frontend/middleware.go  src/frontend/handlers.go src/frontend/money/money.go"
+            ["editEmailService.js"]="src/emailservice/email_client.py src/emailservice/email_server.py"
+            ["editCartService.js"]="src/cartservice/src/cartstore/RedisCartStore.cs src/cartservice/src/cartstore/AlloyDBCartStore.cs src/cartservice/src/cartstore/SpannerCartStore.cs"
+            ["editCheckoutservice.js"]="src/checkoutservice/main.go"
+            ["editCurrencyservice.js"]="src/currencyservice/data/currency_conversion.json"
+            ["editCurrencyServiceServerFile.js"]="src/currencyservice/client.js src/currencyservice/server.js"
+          )
+
+          for script in "${!edits[@]}"; do
+            files=${edits[$script]}
+
+            echo "Running $script on $files"
+            node ".github/scripts/$script" $files
+
+            for f in $files; do
+              if git diff --quiet -- "$f"; then
+                echo "No changes in $f"
+              else
+                git config user.name "github-actions[bot]"
+                git config user.email "github-actions[bot]@users.noreply.github.com"
+                git add "$f"
+                git commit -m "changed $(basename "$f")"
+                git push
+              fi
+            done
+          done
+
