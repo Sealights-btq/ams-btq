@@ -7,8 +7,7 @@ pipeline {
   }
 
   environment {
-    machine_dns = 'ams-sealights.sealights.co'
-    LAB_ID = ''
+    machine_dns = 'template.btq.sealights.co'
   }
 
   parameters {
@@ -92,7 +91,7 @@ pipeline {
             def IDENTIFIER= "${params.BRANCH}-${env.CURRENT_VERSION}"
             env.LAB_ID = create_lab_id(
             token: "${env.SL_TOKEN}",
-            machine: "https://ams-sealights.sealights.co",
+            machine: "https://public-btq.sealights.co",
             app: "${params.APP_NAME}",
             branch: "${params.BRANCH}",
             test_env: "${IDENTIFIER}",
@@ -209,21 +208,37 @@ def create_lab_id(Map params) {
       cdOnlyString = ', "cdOnly": true'
     }
     if (params.isPR){
-      env.LAB_ID = (sh(returnStdout: true, script:"""
-            #!/bin/sh -e +x
-            curl -X POST "${params.machine}/sl-api/v1/agent-apis/lab-ids/pull-request" -H "Authorization: Bearer ${params.token}" -H "Content-Type: application/json" -d '{ "appName": "${params.app}", "branchName": "${params.branch}", "testEnv": "${params.test_env}", "targetBranch": "${params.target_branch}", "isHidden": true }' | jq -r '.data.labId'
-           """)).trim()
+      def response = sh(returnStdout: true, script:"""
+            #!/bin/sh
+            set -e
+            JSON_PAYLOAD='{"appName": "${params.app}", "branchName": "${params.branch}", "testEnv": "${params.test_env}", "targetBranch": "${params.target_branch}", "isHidden": true}'
+            curl -f -X POST "${params.machine}/sl-api/v1/agent-apis/lab-ids/pull-request" \\
+              -H "Authorization: Bearer ${params.token}" \\
+              -H "Content-Type: application/json" \\
+              -d "\$JSON_PAYLOAD" | jq -r '.data.labId'
+           """).trim()
+      env.LAB_ID = response
     } else {
-      env.LAB_ID = (sh(returnStdout: true, script:"""
-            #!/bin/sh -e +x
-            curl -X POST "${params.machine}/sl-api/v1/agent-apis/lab-ids" -H "Authorization: Bearer ${params.token}" -H "Content-Type: application/json" -d '{ "appName": "${params.app}", "branchName": "${params.branch}", "testEnv": "${params.test_env}", "labAlias": "${params.lab_alias}", "isHidden": true ${cdOnlyString}}' | jq -r '.data.labId'
-           """)).trim()
+      def response = sh(returnStdout: true, script:"""
+            #!/bin/sh
+            set -e
+            JSON_PAYLOAD='{"appName": "${params.app}", "branchName": "${params.branch}", "testEnv": "${params.test_env}", "labAlias": "${params.lab_alias}", "isHidden": true${cdOnlyString}}'
+            curl -f -X POST "${params.machine}/sl-api/v1/agent-apis/lab-ids" \\
+              -H "Authorization: Bearer ${params.token}" \\
+              -H "Content-Type: application/json" \\
+              -d "\$JSON_PAYLOAD" | jq -r '.data.labId'
+           """).trim()
+      env.LAB_ID = response
+    }
+    if (!env.LAB_ID || env.LAB_ID.isEmpty()) {
+      error "LAB_ID is empty after creation"
     }
     echo "LAB ID: ${env.LAB_ID}"
     return env.LAB_ID
   } catch (err) {
-    echo env.LAB_ID
-    error "Failed to create lab id"
+    echo "Error creating lab ID: ${err.getMessage()}"
+    echo "LAB_ID value: ${env.LAB_ID ?: 'not set'}"
+    error "Failed to create lab id: ${err.getMessage()}"
   }
 }
 
