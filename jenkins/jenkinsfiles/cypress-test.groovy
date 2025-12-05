@@ -43,7 +43,6 @@ pipeline {
                 script{
                     withCredentials([string(credentialsId: 'sealights-token', variable: 'SL_TOKEN')]) {
                         sh """
-                        cd integration-tests/cypress/
                      # Try to install pnpm via corepack, fallback to npm if it fails
                     corepack enable || true
                     if ! corepack prepare pnpm@latest --activate 2>/dev/null; then
