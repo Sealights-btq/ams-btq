@@ -16,6 +16,7 @@ pipeline {
     string(name: 'SL_LABID', defaultValue: '', description: 'Lab_id')
     booleanParam(name: 'Run_all_tests', defaultValue: true, description: 'Checking this box will run all tests even if individual ones are not checked')
     booleanParam(name: 'Cypress', defaultValue: false, description: 'Run tests using Cypress testing framework')
+    booleanParam(name: 'Playwright', defaultValue: false, description: 'Run tests using Playwright testing framework') 
     booleanParam(name: 'MS', defaultValue: false, description: 'Run tests using MS testing framework')
     booleanParam(name: 'Cucumberjs', defaultValue: false, description: 'Run tests using Cucumberjs testing framework (maven)')
     booleanParam(name: 'NUnit', defaultValue: false, description: 'Run tests using NUnityour_dns testing framework')
@@ -81,6 +82,39 @@ pipeline {
           withCredentials([string(credentialsId: 'sealights-token', variable: 'SL_TOKEN')]) {
             if( params.Run_all_tests == true || params.Cypress == true) {
               build(job:"cypress-test", parameters: [string(name: 'BRANCH', value: "${params.BRANCH}"),string(name: 'SL_LABID', value: "${params.SL_LABID}") , string(name:'SL_TOKEN' , value:"${env.SL_TOKEN}") ,string(name:'MACHINE_DNS1' , value:"${env.MACHINE_DNS}")])
+            }
+          }
+        }
+      }
+    }
+     stage('Playwright framework'){
+      steps{
+        script{
+          withCredentials([string(credentialsId: 'sealights-token', variable: 'SL_TOKEN')]) {
+            if( params.Run_all_tests == true || params.Playwright == true) {
+              sh """
+                        echo 'Playwright framework starting ..... '
+                        cd integration-tests/playwright
+                        echo ${env.SL_TOKEN}>sltoken.txt
+                        npm install
+                        npm install --save-dev sealights-playwright-plugin
+                        export machine_dns="${env.MACHINE_DNS}"
+                        export MACHINE_DNS="${env.MACHINE_DNS}"
+                        echo 'Installing Playwright browsers...'
+                        npx playwright install --force
+                        npx playwright install chromium
+                        npx playwright install-deps
+                        echo 'Setting up Sealights environment variables for Playwright...'
+                        export SL_TOKEN=${env.SL_TOKEN}
+                        export SL_LAB_ID=${params.SL_LABID}
+                        export SL_TEST_STAGE="Playwright Tests"
+                        export SL_TIA_DISABLED="false"
+                        export SL_DISABLE="false"
+                        echo 'Running Playwright tests with Sealights integration...'
+                        npx playwright test
+                        cd ../..
+                        sleep ${env.wait_time}
+                        """
             }
           }
         }
