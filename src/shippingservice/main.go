@@ -39,6 +39,7 @@ const (
 var log *logrus.Logger
 
 func init() {
+	fmt.Println("Calling Function!")
 	log = logrus.New()
 	log.Level = logrus.DebugLevel
 	log.Formatter = &logrus.JSONFormatter{
