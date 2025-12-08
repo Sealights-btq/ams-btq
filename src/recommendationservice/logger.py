@@ -31,6 +31,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
       log_record['severity'] = record.levelname
 
 def getJSONLogger(name):
+   print("Calling Function")
   logger = logging.getLogger(name)
   handler = logging.StreamHandler(sys.stdout)
   formatter = CustomJsonFormatter('%(timestamp)s %(severity)s %(name)s %(message)s')

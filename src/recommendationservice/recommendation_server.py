@@ -39,6 +39,7 @@ from logger import getJSONLogger
 logger = getJSONLogger('recommendationservice-server')
 
 def initStackdriverProfiling():
+  print("Calling Function")
   project_id = None
   try:
     project_id = os.environ["GCP_PROJECT_ID"]
