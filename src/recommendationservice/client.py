@@ -30,7 +30,7 @@ if __name__ == "__main__":
         port = "8080"
 
     # set up server stub
-     print("Calling Function")
+     print("Calling Function!")
     channel = grpc.insecure_channel('localhost:'+port)
     stub = demo_pb2_grpc.RecommendationServiceStub(channel)
     # form request
