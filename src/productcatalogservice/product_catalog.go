@@ -18,6 +18,7 @@ import (
 	"context"
 	"strings"
 	"time"
+	"fmt" 
 
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/productcatalogservice/genproto"
 	"google.golang.org/grpc/codes"
