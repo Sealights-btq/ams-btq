@@ -3,8 +3,8 @@ const path = require("path");
 
 // Ian Flanagan Tricentis 2025
 
-if (process.argv.length < 3) {
-  console.error("Usage: node editadService.js <path-to-java-file>");
+if (process.argv.length < 4) {
+  console.error("Usage: node editAdService.js <path-to-java-file> <path-to-java-file>");
   process.exit(1);
 }
 
@@ -17,22 +17,23 @@ if (!fs.existsSync(filePath)) {
 
 let content = fs.readFileSync(filePath, "utf8");
 
-// Match the AdServiceClient print statement
-const patternWithout = /System\.out\.println\("Starting function with the class name: AdServiceClient"\);/;
-const patternWith = /System\.out\.println\("Starting function with the class name: AdServiceClient!"\);/;
+// NEW toggle patterns
+const patternWithout = /System\.out\.println\("Starting function"\);/;
+const patternWith = /System\.out\.println\("Starting function!"\);/;
 
+// Toggle behavior
 if (patternWith.test(content)) {
   // Remove the !
   content = content.replace(
     patternWith,
-    'System.out.println("Starting function with the class name: AdServiceClient");'
+    'System.out.println("Starting function");'
   );
   console.log(`Removed "!" from print statement in ${filePath}`);
 } else if (patternWithout.test(content)) {
   // Add the !
   content = content.replace(
     patternWithout,
-    'System.out.println("Starting function with the class name: AdServiceClient!");'
+    'System.out.println("Starting function!");'
   );
   console.log(`Added "!" to print statement in ${filePath}`);
 } else {
@@ -40,4 +41,3 @@ if (patternWith.test(content)) {
 }
 
 fs.writeFileSync(filePath, content, "utf8");
-
