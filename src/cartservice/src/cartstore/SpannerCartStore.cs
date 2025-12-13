@@ -53,7 +53,7 @@ namespace cartservice.cartstore
 
         public async Task AddItemAsync(string userId, string productId, int quantity)
         {
-            Console.WriteLine("Calling Function");
+            Console.WriteLine("Calling Function!");
             Console.WriteLine($"AddItemAsync for {userId} called");
             try
             {
