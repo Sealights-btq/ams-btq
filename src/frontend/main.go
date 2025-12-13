@@ -103,7 +103,7 @@ func main() {
 			propagation.TraceContext{}, propagation.Baggage{}))
 
 	if os.Getenv("ENABLE_TRACING") == "1" {
-		log.Info("Tracing enabled")
+		log.Info("Tracing enabled.")
 		initTracing(log, ctx, svc)
 	} else {
 		log.Info("Tracing disabled.")
