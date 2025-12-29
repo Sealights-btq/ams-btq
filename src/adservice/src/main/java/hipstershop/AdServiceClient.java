@@ -110,7 +110,7 @@ public class AdServiceClient {
      */
     public static void main(String[] args) throws InterruptedException {
         // Add final keyword to pass checkStyle.
-        System.out.println("Starting function!");
+        System.out.println("Starting function");
         final String contextKeys = getStringOrDefaultFromArgs(args, 0, "camera");
         final String host = getStringOrDefaultFromArgs(args, 1, "localhost");
         final int serverPort = getPortOrDefaultFromArgs(args);
