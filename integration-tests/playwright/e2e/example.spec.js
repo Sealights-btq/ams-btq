@@ -15,7 +15,7 @@ const testData = {
   state: 'TX',
   zip: '78757',
   cvv: '123',
-  baseURL: 'https://ian-btq.btq.sealights.co/'
+  baseURL: 'https://ams-btq.btq.sealights.co/'
 };
 
 function getTitle(expectedTitle) {
