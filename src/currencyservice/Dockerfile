@@ -38,7 +38,7 @@ RUN pnpm install --prod
 #Install the agent (Not a url)
 RUN pnpm add ${SEALIGHTS_NODE_AGENT}
 #Run config to get build session id
-RUN  pnpm exec slnodejs config --token ${SEALIGHTS_TOKEN} --appname "paymentservice" --branch ${BRANCH} --build ${BUILD_NAME}
+RUN  pnpm exec slnodejs config --token ${SEALIGHTS_TOKEN} --appname "currencyservice" --branch ${BRANCH} --build ${BUILD_NAME}
 #Scan the code
 RUN pnpm exec slnodejs scan --token ${SEALIGHTS_TOKEN} --buildsessionidfile buildSessionId --workspacepath "." --scm none --es6Modules
 
@@ -54,6 +54,6 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 COPY . .
 ENV NODE_DEBUG=sl
-EXPOSE 50051
+EXPOSE 7000
 #Run code with sealights
-CMD  pnpm exec slnodejs run --token "${SL_TOKEN}" --buildsessionidfile buildSessionId --labid "${SL_LAB_ID}" --workspacepath . index.js
+CMD  pnpm exec slnodejs run --token "${SL_TOKEN}" --buildsessionidfile buildSessionId --labid "${SL_LAB_ID}" --workspacepath . server.js
