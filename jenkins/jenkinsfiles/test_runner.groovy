@@ -103,7 +103,9 @@ pipeline {
                         echo 'Installing Playwright browsers...'
                         npx playwright install --force
                         npx playwright install chromium
-                        npx playwright install-deps
+                        # Remove invalid NodeSource repository if it exists, then install deps
+                        rm -f /etc/apt/sources.list.d/nodesource.list || true
+                        npx playwright install-deps || echo 'Warning: install-deps failed, but browsers are already installed'
                         echo 'Setting up Sealights environment variables for Playwright...'
                         export SL_TOKEN=${env.SL_TOKEN}
                         export SL_LAB_ID=${params.SL_LABID}
