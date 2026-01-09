@@ -8,7 +8,7 @@ pipeline {
 
     parameters {
         string(name: 'BRANCH', defaultValue: 'public', description: 'Branch to clone (ahmad-branch)')
-        string(name: 'SL_LABID', defaultValue: '', description: 'Lab_id')
+        string(name: 'SL_LABID', defaultValue: 'integ_main_Boutique', description: 'Lab_id')
     }
     environment {
       NO_COLOR = "true"
@@ -55,7 +55,7 @@ pipeline {
                         export CYPRESS_SL_TOKEN="${env.SL_TOKEN}"
                         pnpm add -D cypress@latest
                         pnpm exec cypress install
-                        pnpm exec cypress run --spec "integration/api.spec.js"
+                        pnpm exec cypress run --spec "cypress/integration/api.spec.js"
                         pnpm exec cypress run
                         """
                     }
