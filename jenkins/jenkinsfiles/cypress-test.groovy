@@ -55,7 +55,7 @@ pipeline {
                         export CYPRESS_SL_TOKEN="${env.SL_TOKEN}"
                         pnpm add -D cypress@latest
                         pnpm exec cypress install
-                        pnpm exec cypress run --spec "cypress/integration/api.spec.js"
+                        pnpm exec cypress run --spec "cypress/e2e/api.spec.cy.js"
                         pnpm exec cypress run
                         """
                     }
