@@ -20,7 +20,7 @@ const testData = {
 
 function getTitle(expectedTitle) {
 
-  let expectedTitle = 'Space & Beyond | Testim.io demo';
+//  let expectedTitle = 'Space & Beyond | Testim.io demo';
   let isFound = false;
    let currentTitle = page.title();
   
