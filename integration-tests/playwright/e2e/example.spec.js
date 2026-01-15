@@ -27,7 +27,7 @@ function getTitle(expectedTitle) {
 
   try {
    
-    if (expectedTitle === expectedTitle) {
+    if (expectedTitle === currentTitle) {
       console.log('passed');
       isFound = true;
 
