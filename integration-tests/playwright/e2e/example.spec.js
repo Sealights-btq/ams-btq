@@ -22,7 +22,7 @@ function getTitle(expectedTitle) {
 
   let expectedTitle = 'Space & Beyond | Testim.io demo';
   let isFound = false;
-   let currentTitle = await page.title();
+   let currentTitle = page.title();
   
   try {
    
@@ -31,7 +31,7 @@ function getTitle(expectedTitle) {
       isFound = true;
 
     } else {
-      console.log('failed');
+      console.log(`currentTitle ${currentTitle} doesnt match expected Title ${expectedTitle}`);
     }
 
   } catch (err) {
