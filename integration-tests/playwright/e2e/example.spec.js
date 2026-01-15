@@ -22,9 +22,8 @@ function getTitle(expectedTitle) {
 
   let expectedTitle = 'Space & Beyond | Testim.io demo';
   let isFound = false;
-   let currentTitle = document.title;
+   let currentTitle = await page.title();
   
-
   try {
    
     if (expectedTitle === currentTitle) {
