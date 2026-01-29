@@ -19,3 +19,4 @@ pkg/
 release/wi-kubernetes-manifests.yaml
 node_modules/
 integration-tests/playwright/test-results/
+*.pem
