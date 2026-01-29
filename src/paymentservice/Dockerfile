@@ -56,4 +56,4 @@ COPY . .
 ENV NODE_DEBUG=sl
 EXPOSE 50051
 #Run code with sealights
-CMD  pnpm exec slnodejs run --token "${SL_TOKEN}" --buildsessionidfile buildSessionId --labid "${SL_LAB_ID}" --workspacepath . index.js
+CMD  node_modules/.bin/slnodejs run --token "${SL_TOKEN}" --buildsessionidfile buildSessionId --labid "${SL_LAB_ID}" --workspacepath . index.js

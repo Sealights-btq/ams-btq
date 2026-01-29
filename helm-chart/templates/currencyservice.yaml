@@ -63,9 +63,17 @@ spec:
         readinessProbe:
           grpc:
             port: 7000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
         livenessProbe:
           grpc:
             port: 7000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
         resources:
           {{- toYaml .Values.currencyService.resources | nindent 10 }}
 ---
