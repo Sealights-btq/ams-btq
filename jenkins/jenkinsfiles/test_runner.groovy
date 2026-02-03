@@ -16,7 +16,7 @@ pipeline {
     string(name: 'SL_LABID', defaultValue: '', description: 'Lab_id')
     booleanParam(name: 'Run_all_tests', defaultValue: true, description: 'Checking this box will run all tests even if individual ones are not checked')
     booleanParam(name: 'Cypress', defaultValue: false, description: 'Run tests using Cypress testing framework')
-    booleanParam(name: 'Playwright', defaultValue: false, description: 'Run tests using Playwright testing framework') 
+    booleanParam(name: 'Playwright', defaultValue: false, description: 'Run tests using Playwright testing framework')
     booleanParam(name: 'MS', defaultValue: false, description: 'Run tests using MS testing framework')
     booleanParam(name: 'Cucumberjs', defaultValue: false, description: 'Run tests using Cucumberjs testing framework (maven)')
     booleanParam(name: 'NUnit', defaultValue: false, description: 'Run tests using NUnityour_dns testing framework')
@@ -158,9 +158,7 @@ pipeline {
                       "labid": "${params.SL_LABID}",
                       "testStage": "Cucumber Tests"
                       }' > sl.conf
-                    ./node_modules/.bin/slnodejs start --tokenfile ./sltoken.txt --labid ${params.SL_LABID} --teststage "Cucumber Tests"
                     node_modules/.bin/cucumber-js ./features --require \$SL_PACKAGE --require 'features/**/*.@(js|cjs|mjs)'
-                    ./node_modules/.bin/slnodejs end --tokenfile ./sltoken.txt --labid ${params.SL_LABID}
                     sleep ${env.wait_time}
                     """
             }
