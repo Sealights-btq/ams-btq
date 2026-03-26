@@ -149,7 +149,7 @@ def initStackdriverProfiling():
         googlecloudprofiler.start(service='email_server', service_version='1.0.0', verbose=0, project_id=project_id)
       else:
         googlecloudprofiler.start(service='email_server', service_version='1.0.0', verbose=0)
-      logger.info("Successfully started Stackdriver Profiler")
+      logger.info("Successfully started Stackdriver Profiler.")
       return
     except (BaseException) as exc:
       logger.info("Unable to start Stackdriver Profiler Python agent. " + str(exc))
