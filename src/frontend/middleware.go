@@ -74,7 +74,7 @@ func (lh *logHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.WithFields(logrus.Fields{
 			"http.resp.took_ms": int64(time.Since(start) / time.Millisecond),
 			"http.resp.status":  rr.status,
-			"http.resp.bytes":   rr.b}).Debugf("request complete.")
+			"http.resp.bytes":   rr.b}).Debugf("request complete")
 	}()
 
 	ctx = context.WithValue(ctx, ctxKeyLog{}, log)
