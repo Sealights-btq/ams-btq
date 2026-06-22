@@ -28,7 +28,7 @@ const (
 
 var (
 	ErrInvalidValue        = errors.New("one of the specified money values is invalid")
-	ErrMismatchingCurrency = errors.New("mismatching currency codes")
+	ErrMismatchingCurrency = errors.New("mismatching currency codes.")
 )
 
 // IsValid checks if specified value has a valid units/nanos signs and ranges.
