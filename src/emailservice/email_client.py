@@ -26,7 +26,7 @@ def send_confirmation_email(email, order):
   channel = grpc.insecure_channel('[::]:8080')
   stub = demo_pb2_grpc.EmailServiceStub(channel)
   try:
-    logger.info('Client for email service.')
+    logger.info('Client for email service')
     response = stub.SendOrderConfirmation(demo_pb2.SendOrderConfirmationRequest(
       email = email,
       order = order
